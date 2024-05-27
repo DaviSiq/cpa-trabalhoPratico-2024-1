@@ -1,4 +1,7 @@
 package src;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -25,49 +28,59 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-        Scanner console = new Scanner(System.in);
+        String inputFilePath = "arquivosTeste/entrada.txt";
+        /* 
+        Um disclaimer, para reconhecer os caminhos em java, 
+        tem que colocar o caminho referente ao diretório
+        central, ou seja 'arquivosTeste/entrada.txt', ../etc não funcionaria
+        */
         ArrayList<Long> pesoItens = new ArrayList<>();
         ArrayList<Long> beneficioItens = new ArrayList<>();
+        int quantidadeItens = 0;
+        long capacidadeMochila = 0;
 
-        System.out.println("\u001B[33m" + "Digite a quantidade de itens a colocar na mochila" + "\u001B[0m");
-        System.out.print(">");
-        int quantidadeItens = Integer.parseInt(console.nextLine());
+        try (BufferedReader br = new BufferedReader(new FileReader(inputFilePath))) {
+            quantidadeItens = Integer.parseInt(br.readLine().trim());
+            capacidadeMochila = Long.parseLong(br.readLine().trim());
 
-        System.out.println("\u001B[33m" + "Digite a Capacidade da Mochila" + "\u001B[0m");
-        System.out.print(">");
-        long capacidadeMochila = Long.parseLong(console.nextLine());
+            /*Le a qntd e a capacidade, dps imediatamente já começa a ler 
+            os pesos e em seguida os beneficios.
+            */
+            
+            for (int i = 0; i < quantidadeItens; i++) {
+                pesoItens.add(Long.parseLong(br.readLine().trim()));
+            }
 
-        System.out.println("\u001B[31m" + "Digite os pesos dos itens" + "\u001B[0m");
-        for (int i=0; i<quantidadeItens; i++) {
-            System.out.print(">");
-            pesoItens.add(Long.parseLong(console.nextLine()));
-        }
+            // Pulando a linha vazia
+            br.readLine();
 
-        System.out.println("\u001B[34m" + "Digite os benefícios dos itens" + "\u001B[0m");
-        for (int i=0; i<quantidadeItens; i++) {
-            System.out.print(">");
-            beneficioItens.add(Long.parseLong(console.nextLine()));
+            for (int i = 0; i < quantidadeItens; i++) {
+                beneficioItens.add(Long.parseLong(br.readLine().trim()));
+            }
+        } catch (IOException e) {
+            System.err.println("Erro lendo o arquivo de entrada: " + e.getMessage());
+            return;
         }
 
         System.out.println("\u001B[33m" + "[1] Solução de Força Bruta\n" + "[2] Solução Heurística" + "\u001B[0m");
         System.out.print(">");
-        int opcao = Integer.parseInt(console.nextLine());
+        try (Scanner console = new Scanner(System.in)) {
+            int opcao = Integer.parseInt(console.nextLine());
 
-        if (opcao == 1) {
-            try {
-                if (quantidadeItens > 30) {
-                    throw new StackOverflowError("A complexidade do Algoritmo não suporta uma entrada tão grande!");
+            if (opcao == 1) {
+                try {
+                    if (quantidadeItens > 30) {
+                        throw new StackOverflowError("A complexidade do Algoritmo não suporta uma entrada tão grande!");
+                    }
+                    ProblemaMochilaForcaBruta mochila = new ProblemaMochilaForcaBruta(capacidadeMochila, pesoItens, beneficioItens);
+                    mochila.calcularSolucao();
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
                 }
-                ProblemaMochilaForcaBruta mochila = new ProblemaMochilaForcaBruta(capacidadeMochila, pesoItens, beneficioItens);
+            } else if (opcao == 2) {
+                ProblemaMochilaHeuristica mochila = new ProblemaMochilaHeuristica(capacidadeMochila, pesoItens, beneficioItens);
                 mochila.calcularSolucao();
             }
-            catch (Exception e) {
-                System.out.println(e.getMessage());
-            }
-        }
-        else if (opcao == 2) {
-            ProblemaMochilaHeuristica mochila = new ProblemaMochilaHeuristica(capacidadeMochila,pesoItens,beneficioItens);
-            mochila.calcularSolucao();
         }
     }
 }
