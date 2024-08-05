@@ -28,7 +28,7 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-        String inputFilePath = "arquivosTeste/entrada.txt";
+        String inputFilePath = "testes/entrada1.txt";
         /* 
         Um disclaimer, para reconhecer os caminhos em java, 
         tem que colocar o caminho referente ao diretório
