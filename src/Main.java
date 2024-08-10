@@ -5,35 +5,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-/**
- * Disciplina GCC253 - Complexidade e Projeto de Algoritmos
- * Professor: Vinícius Dias
- * Atividade Avaliativa 6 - Projeto Prático
- *
- * Implementação do Problema da Mochila:
- * "Dados um conjunto de n itens com seus respectivos pesos w1,... , wn e valores/benefícios v1,... , vn, e
- * uma capacidade de mochila W , o objetivo é encontrar um subconjunto de itens que caibam na mochila
- * (pesos) e que maximizem o benefício. Portanto, a entrada consiste de dois arranjos (w e v) e um número
- * (W ); e a saída consiste de um subconjunto I ∈ {1, 2,.. , n} de itens."
- *
- * Implementação 1 - Força Bruta
- * Implementação 2 - Heurística
- *
- * @author Francisco Afonso de Oliveira Neto
- * @author Lucas Gomes Colombo
- * @author Davi Hermogenes Siqueira
- * @author André Marçal Medeiros
- * @author Eduardo Dezena Goncalvez
- */
 public class Main {
 
     public static void main(String[] args) {
-        String inputFilePath = "testes/entrada1.txt";
-        /* 
-        Um disclaimer, para reconhecer os caminhos em java, 
-        tem que colocar o caminho referente ao diretório
-        central, ou seja 'arquivosTeste/entrada.txt', ../etc não funcionaria
-        */
+        String inputFilePath = "arquivosTeste/entrada1.txt";
+
         ArrayList<Long> pesoItens = new ArrayList<>();
         ArrayList<Long> beneficioItens = new ArrayList<>();
         int quantidadeItens = 0;
@@ -42,10 +18,6 @@ public class Main {
         try (BufferedReader br = new BufferedReader(new FileReader(inputFilePath))) {
             quantidadeItens = Integer.parseInt(br.readLine().trim());
             capacidadeMochila = Long.parseLong(br.readLine().trim());
-
-            /*Le a qntd e a capacidade, dps imediatamente já começa a ler 
-            os pesos e em seguida os beneficios.
-            */
             
             for (int i = 0; i < quantidadeItens; i++) {
                 pesoItens.add(Long.parseLong(br.readLine().trim()));
@@ -62,8 +34,12 @@ public class Main {
             return;
         }
 
-        System.out.println("\u001B[33m" + "[1] Solução de Força Bruta\n" + "[2] Solução Heurística" + "\u001B[0m");
+        System.out.println("\u001B[33m" + "[1] Solução de Força Bruta\n" 
+            + "[2] Solução Heurística\n" 
+            + "[3] Solução Top-Down (Memoization)\n" 
+            + "[4] Solução Bottom-Up (Programação Dinâmica)" + "\u001B[0m");
         System.out.print(">");
+
         try (Scanner console = new Scanner(System.in)) {
             int opcao = Integer.parseInt(console.nextLine());
 
@@ -79,6 +55,12 @@ public class Main {
                 }
             } else if (opcao == 2) {
                 ProblemaMochilaHeuristica mochila = new ProblemaMochilaHeuristica(capacidadeMochila, pesoItens, beneficioItens);
+                mochila.calcularSolucao();
+            } else if (opcao == 3) {
+                ProblemaMochilaTopDown mochila = new ProblemaMochilaTopDown(capacidadeMochila, pesoItens, beneficioItens);
+                mochila.calcularSolucao();
+            } else if (opcao == 4) {
+                ProblemaMochilaBottomUp mochila = new ProblemaMochilaBottomUp(capacidadeMochila, pesoItens, beneficioItens);
                 mochila.calcularSolucao();
             }
         }
