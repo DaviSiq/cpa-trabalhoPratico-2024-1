@@ -1,5 +1,3 @@
-package src;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -12,16 +10,8 @@ public class Main {
     public static void main(String[] args) {
         int numExecucoes = 1;
         String[] arquivosEntrada = {
-            "testes/instancias_teste_apresentacao/entrada1.txt",
-            "testes/instancias_teste_apresentacao/entrada2.txt",
-            "testes/instancias_teste_apresentacao/entrada3.txt",
-            "testes/instancias_teste_apresentacao/entrada4.txt",
-            "testes/instancias_teste_apresentacao/entrada5.txt",
-            "testes/instancias_teste_apresentacao/entrada6.txt",
-            "testes/instancias_teste_apresentacao/entrada7.txt",
-            "testes/instancias_teste_apresentacao/entrada8.txt",
-            "testes/instancias_teste_apresentacao/entrada9.txt",
-            "testes/instancias_teste_apresentacao/entrada10.txt",
+            "testes/casosSimples/entrada1.txt",
+            "testes/casosSimples/entrada2.txt"
         };
 
         // Map para armazenar os resultados: chave é o nome do arquivo, valor é outro map com os resultados dos algoritmos
@@ -68,7 +58,7 @@ public class Main {
                                 throw new StackOverflowError("A complexidade do Algoritmo não suporta uma entrada tão grande!");
                             }
                             ProblemaMochilaForcaBruta mochila = new ProblemaMochilaForcaBruta(capacidadeMochila, pesoItens, beneficioItens);
-
+                            System.out.println("Força Bruta: ");
                             startTime = System.nanoTime();
                             mochila.calcularSolucao();
                             endTime = System.nanoTime();
@@ -80,12 +70,14 @@ public class Main {
                         ProblemaMochilaHeuristica mochila = new ProblemaMochilaHeuristica(capacidadeMochila, pesoItens, beneficioItens);
 
                         startTime = System.nanoTime();
+                        System.out.println("Heurística: ");
                         mochila.calcularSolucao();
                         endTime = System.nanoTime();
                     } else if (opcao == 3) {
                         ProblemaMochilaBottomUp mochila = new ProblemaMochilaBottomUp(capacidadeMochila, pesoItens, beneficioItens);
 
                         startTime = System.nanoTime();
+                        System.out.println("Bottom-up:");
                         mochila.calcularSolucao();
                         endTime = System.nanoTime();
                     }
