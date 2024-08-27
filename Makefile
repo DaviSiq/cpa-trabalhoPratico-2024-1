@@ -1,5 +1,5 @@
 # Parâmetro padrão: arquivo de entrada
-input ?= "testes/entrada1.txt"
+input ?= "testes/casosSimples/entrada1.txt"
 
 # Compilador
 JAVAC = javac
@@ -9,7 +9,7 @@ JAVA = java
 SRC_DIR = src
 
 # Lista de arquivos-fonte
-SOURCES = $(SRC_DIR)/Main.java $(SRC_DIR)/ProblemaMochilaForcaBruta.java $(SRC_DIR)/ProblemaMochilaHeuristica.java
+SOURCES = $(wildcard $(SRC_DIR)/*.java)
 
 # Diretório de classes compiladas
 CLASS_DIR = bin
@@ -27,7 +27,7 @@ $(CLASS_DIR)/Main.class: $(SOURCES)
 
 # Executa o programa com entrada default ou especificada
 run: $(CLASS_DIR)/Main.class
-	$(JAVA) -cp $(CLASS_DIR) src.Main < $(input)
+	$(JAVA) -cp $(CLASS_DIR) Main < $(input)
 
 # Limpa os arquivos compilados
 clean:
